@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ebaycodingchallenge.R
 import com.example.ebaycodingchallenge.data.model.Image
 import com.example.ebaycodingchallenge.di.DaggerImageComponent
-import com.example.ebaycodingchallenge.di.FragmentModule
+import com.example.ebaycodingchallenge.di.RepositoryModule
 import com.example.ebaycodingchallenge.di.WebServicesModule
 import com.example.ebaycodingchallenge.ui.adapter.CarImageAdapter
 import com.example.ebaycodingchallenge.ui.adapter.GridSpacingItemDecoration
@@ -20,17 +20,18 @@ import com.example.ebaycodingchallenge.viewmodel.ImageViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class ImagesMainActivity : AppCompatActivity() {
+class CarActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ImageViewModelFactory
     lateinit var viewModel: ImageMainViewModel
     lateinit var imageAdapter: CarImageAdapter
+    companion object{const val INTENT_MESSAGE = "message"}
     private val carImageClickListener: ImageClickListener = object : ImageClickListener {
 
         override fun imageClickListener(image: Image) {
-            intent = Intent(this@ImagesMainActivity, CarDetailsActivity::class.java)
-            intent.putExtra("message", "https://${image.uri}_27.jpg")
+            intent = Intent(this@CarActivity, CarDetailsActivity::class.java)
+            intent.putExtra(INTENT_MESSAGE, "https://${image.uri}_27.jpg")
             startActivity(intent)
         }
     }
@@ -68,7 +69,7 @@ class ImagesMainActivity : AppCompatActivity() {
 
     fun getDepenedency() {
         DaggerImageComponent.builder()
-            .fragmentModule(FragmentModule())
+            .repositoryModule(RepositoryModule())
             .webServicesModule(WebServicesModule())
             .build()
             .inject(this)

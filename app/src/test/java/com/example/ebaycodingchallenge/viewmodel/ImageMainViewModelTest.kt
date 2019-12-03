@@ -31,8 +31,8 @@ class ImageMainViewModelTest {
     lateinit var carImgViewModel: ImageMainViewModel
     private var imageList = mutableListOf<Image>()
     private val carImgLDObserver: Observer<List<Image>> = mock()
-    val errorMessageLDObsrever: Observer<String> = mock()
-    val loadingStateLDObserver: Observer<ImageMainViewModel.LoadingState> = mock()
+    private val errorMessageLDObsrever: Observer<String> = mock()
+    private val loadingStateLDObserver: Observer<ImageMainViewModel.LoadingState> = mock()
     lateinit var carImageObject: CarImages
     private val id = 12
 

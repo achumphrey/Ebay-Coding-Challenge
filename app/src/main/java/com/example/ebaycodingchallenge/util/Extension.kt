@@ -12,10 +12,6 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false):
     return  LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
 
-fun ImageView.loadImage(path: String?) {
-    Picasso.get().load(path).into(this)
-}
-
 fun ImageView.loadGlideImage(path: String){
     Glide.with(this).load(path).into(this)
 }

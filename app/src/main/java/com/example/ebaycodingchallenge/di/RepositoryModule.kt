@@ -10,7 +10,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class FragmentModule {
+class RepositoryModule {
 
     @Singleton
     @Provides

@@ -8,7 +8,7 @@ import com.example.ebaycodingchallenge.data.model.Image
 import com.example.ebaycodingchallenge.ui.viewholder.ImageViewHolder
 import com.example.ebaycodingchallenge.util.inflate
 
-class CarImageAdapter constructor(private var images: MutableList<Image>, val listener: ImageClickListener):
+class CarImageAdapter constructor(private var images: MutableList<Image>, private val listener: ImageClickListener):
     RecyclerView.Adapter<ImageViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val view : View = parent.inflate(R.layout.image_holder_images, false)
