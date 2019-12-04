@@ -13,7 +13,7 @@ class CarDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_car_details)
 
-        var carImage : String = intent.getStringExtra (INTENT_MESSAGE)
+        val carImage : String = intent.getStringExtra (INTENT_MESSAGE)
         imgLarge.loadGlideImage(carImage)
     }
 }

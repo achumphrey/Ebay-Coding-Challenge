@@ -27,12 +27,12 @@ class CarImagesViewModelTest {
     @JvmField
     var rule: TestRule = InstantTaskExecutorRule()
 
-    lateinit var carImgViewModel: CarImagesViewModel
+    private lateinit var carImgViewModel: CarImagesViewModel
     private var imageList = mutableListOf<Image>()
     private val carImgLDObserver: Observer<List<Image>> = mock()
     private val errorMessageLDObsrever: Observer<String> = mock()
     private val loadingStateLDObserver: Observer<CarImagesViewModel.LoadingState> = mock()
-    lateinit var carImageObject: CarImages
+    private lateinit var carImageObject: CarImages
     private val id = 12
 
     @Mock

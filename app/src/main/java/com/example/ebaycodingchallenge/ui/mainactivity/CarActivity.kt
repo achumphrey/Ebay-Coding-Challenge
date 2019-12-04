@@ -24,8 +24,8 @@ class CarActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: CarImagesViewModelFactory
-    lateinit var viewModel: CarImagesViewModel
-    lateinit var imageAdapter: CarImageAdapter
+    private lateinit var viewModel: CarImagesViewModel
+    private lateinit var imageAdapter: CarImageAdapter
     companion object{const val INTENT_MESSAGE = "message"}
     private val carImageClickListener: ImageClickListener = object : ImageClickListener {
 
@@ -71,7 +71,7 @@ class CarActivity : AppCompatActivity() {
         }
     }
 
-    fun getDependency() {
+    private fun getDependency() {
         DaggerImageComponent.builder()
             .repositoryModule(RepositoryModule())
             .webServicesModule(WebServicesModule())
