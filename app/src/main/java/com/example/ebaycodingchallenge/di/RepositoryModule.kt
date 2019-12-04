@@ -1,10 +1,9 @@
 package com.example.ebaycodingchallenge.di
 
 import com.example.ebaycodingchallenge.data.remote.WebServices
-import com.example.ebaycodingchallenge.data.repository.ImageRepoImp
-import com.example.ebaycodingchallenge.data.repository.ImageRepository
-import com.example.ebaycodingchallenge.viewmodel.ImageMainViewModel
-import com.example.ebaycodingchallenge.viewmodel.ImageViewModelFactory
+import com.example.ebaycodingchallenge.data.repository.RepoImp
+import com.example.ebaycodingchallenge.data.repository.Repository
+import com.example.ebaycodingchallenge.viewmodel.CarImagesViewModelFactory
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -14,13 +13,13 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideViewModelFactory (repository: ImageRepository):ImageViewModelFactory{
-        return  ImageViewModelFactory(repository)
+    fun provideViewModelFactory (repository: Repository):CarImagesViewModelFactory{
+        return  CarImagesViewModelFactory(repository)
     }
 
     @Singleton
     @Provides
-    fun provideImageRepository(webServices: WebServices): ImageRepository{
-        return ImageRepoImp(webServices )
+    fun provideImageRepository(webServices: WebServices): Repository{
+        return RepoImp(webServices )
     }
 }

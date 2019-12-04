@@ -3,11 +3,11 @@ package com.example.ebaycodingchallenge.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.ebaycodingchallenge.data.model.Image
-import com.example.ebaycodingchallenge.data.repository.ImageRepository
+import com.example.ebaycodingchallenge.data.repository.Repository
 import io.reactivex.disposables.CompositeDisposable
 import java.net.UnknownHostException
 
-class ImageMainViewModel constructor(private val repository: ImageRepository): ViewModel() {
+class CarImagesViewModel constructor(private val repository: Repository): ViewModel() {
     private val  disposable:CompositeDisposable = CompositeDisposable()
     val carImage: MutableLiveData<List<Image>> = MutableLiveData()
     val errorMessage: MutableLiveData<String> = MutableLiveData()

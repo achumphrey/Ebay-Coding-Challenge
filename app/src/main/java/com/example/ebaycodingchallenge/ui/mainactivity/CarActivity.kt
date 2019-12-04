@@ -15,16 +15,16 @@ import com.example.ebaycodingchallenge.di.WebServicesModule
 import com.example.ebaycodingchallenge.ui.adapter.CarImageAdapter
 import com.example.ebaycodingchallenge.ui.adapter.GridSpacingItemDecoration
 import com.example.ebaycodingchallenge.ui.adapter.ImageClickListener
-import com.example.ebaycodingchallenge.viewmodel.ImageMainViewModel
-import com.example.ebaycodingchallenge.viewmodel.ImageViewModelFactory
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.ebaycodingchallenge.viewmodel.CarImagesViewModel
+import com.example.ebaycodingchallenge.viewmodel.CarImagesViewModelFactory
+import kotlinx.android.synthetic.main.activity_cars.*
 import javax.inject.Inject
 
 class CarActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var viewModelFactory: ImageViewModelFactory
-    lateinit var viewModel: ImageMainViewModel
+    lateinit var viewModelFactory: CarImagesViewModelFactory
+    lateinit var viewModel: CarImagesViewModel
     lateinit var imageAdapter: CarImageAdapter
     companion object{const val INTENT_MESSAGE = "message"}
     private val carImageClickListener: ImageClickListener = object : ImageClickListener {
@@ -38,13 +38,13 @@ class CarActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_cars)
 
-        getDepenedency()
+        getDependency()
         setupRecyclerView()
 
         viewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(ImageMainViewModel::class.java)
+            ViewModelProviders.of(this, viewModelFactory).get(CarImagesViewModel::class.java)
 
         viewModel.carImage.observe(this, Observer {
             imageAdapter.updateImage(it)
@@ -57,17 +57,21 @@ class CarActivity : AppCompatActivity() {
 
         viewModel.loadingState.observe(this, Observer {
             when (it) {
-                ImageMainViewModel.LoadingState.LOADING -> displayProgressbar()
-                ImageMainViewModel.LoadingState.SUCCESS -> displayImageList()
-                ImageMainViewModel.LoadingState.ERROR -> displayErrorMessage()
+                CarImagesViewModel.LoadingState.LOADING -> displayProgressbar()
+                CarImagesViewModel.LoadingState.SUCCESS -> displayImageList()
+                CarImagesViewModel.LoadingState.ERROR -> displayErrorMessage()
                 else -> displayErrorMessage()
             }
         })
 
         viewModel.getCarImageList()
+
+        btnRetry.setOnClickListener {
+            viewModel.getCarImageList()
+        }
     }
 
-    fun getDepenedency() {
+    fun getDependency() {
         DaggerImageComponent.builder()
             .repositoryModule(RepositoryModule())
             .webServicesModule(WebServicesModule())
@@ -79,17 +83,19 @@ class CarActivity : AppCompatActivity() {
         prgBar.visibility = View.VISIBLE
         rvCarImages.visibility = View.GONE
         tvErrorMessage.visibility = View.GONE
+        btnRetry.visibility = View.GONE
     }
 
     private fun displayErrorMessage() {
         tvErrorMessage.visibility = View.VISIBLE
+        btnRetry.visibility = View.VISIBLE
         rvCarImages.visibility = View.GONE
         prgBar.visibility = View.GONE
     }
 
     private fun displayImageList() {
-
         tvErrorMessage.visibility = View.GONE
+        btnRetry.visibility = View.GONE
         rvCarImages.visibility = View.VISIBLE
         prgBar.visibility = View.GONE
     }

@@ -4,12 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.example.ebaycodingchallenge.data.model.CarImages
 import com.example.ebaycodingchallenge.data.model.Image
-import com.example.ebaycodingchallenge.data.repository.ImageRepository
+import com.example.ebaycodingchallenge.data.repository.Repository
 import com.nhaarman.mockitokotlin2.atLeast
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.Single
-import org.junit.After
 import org.junit.Before
 
 import org.junit.Rule
@@ -22,26 +21,26 @@ import org.mockito.junit.MockitoJUnitRunner
 import java.net.UnknownHostException
 
 @RunWith(MockitoJUnitRunner::class)
-class ImageMainViewModelTest {
+class CarImagesViewModelTest {
 
     @Rule
     @JvmField
     var rule: TestRule = InstantTaskExecutorRule()
 
-    lateinit var carImgViewModel: ImageMainViewModel
+    lateinit var carImgViewModel: CarImagesViewModel
     private var imageList = mutableListOf<Image>()
     private val carImgLDObserver: Observer<List<Image>> = mock()
     private val errorMessageLDObsrever: Observer<String> = mock()
-    private val loadingStateLDObserver: Observer<ImageMainViewModel.LoadingState> = mock()
+    private val loadingStateLDObserver: Observer<CarImagesViewModel.LoadingState> = mock()
     lateinit var carImageObject: CarImages
     private val id = 12
 
     @Mock
-    lateinit var carImgRepository: ImageRepository
+    lateinit var carImgRepository: Repository
 
     @Before
     fun setUp() {
-        carImgViewModel = ImageMainViewModel(carImgRepository)
+        carImgViewModel = CarImagesViewModel(carImgRepository)
         imageList.add(Image("anything", "anything"))
         carImageObject = CarImages(id, imageList)
         carImgViewModel.carImage.observeForever(carImgLDObserver)
@@ -63,11 +62,11 @@ class ImageMainViewModelTest {
         verify(
             loadingStateLDObserver,
             atLeast(1)
-        ).onChanged(ImageMainViewModel.LoadingState.SUCCESS)
+        ).onChanged(CarImagesViewModel.LoadingState.SUCCESS)
     }
 
     @Test
-    fun fetchCarImage_NoReturnImage_NullObject() {
+    fun fetchCarImage_NoReturnImage_EmptyList() {
 
         val carObject = CarImages(id, emptyList())
 
@@ -78,7 +77,7 @@ class ImageMainViewModelTest {
         verify(carImgRepository, atLeast(1)).getCarThumbnailImages()
         verify(carImgLDObserver, atLeast(0)).onChanged(emptyList())
         verify(errorMessageLDObsrever, atLeast(1)).onChanged("No Data Found")
-        verify(loadingStateLDObserver, atLeast(1)).onChanged(ImageMainViewModel.LoadingState.ERROR)
+        verify(loadingStateLDObserver, atLeast(1)).onChanged(CarImagesViewModel.LoadingState.ERROR)
     }
 
     @Test
@@ -95,7 +94,7 @@ class ImageMainViewModelTest {
         verify(carImgRepository, atLeast(1)).getCarThumbnailImages()
         verify(carImgLDObserver, atLeast(0)).onChanged(null)
         verify(errorMessageLDObsrever, atLeast(1)).onChanged("No Network")
-        verify(loadingStateLDObserver, atLeast(1)).onChanged(ImageMainViewModel.LoadingState.ERROR)
+        verify(loadingStateLDObserver, atLeast(1)).onChanged(CarImagesViewModel.LoadingState.ERROR)
     }
 
     @Test
@@ -108,10 +107,6 @@ class ImageMainViewModelTest {
         verify(carImgRepository, atLeast(1)).getCarThumbnailImages()
         verify(carImgLDObserver, atLeast(0)).onChanged(null)
         verify(errorMessageLDObsrever, atLeast(1)).onChanged("Something Wrong")
-        verify(loadingStateLDObserver, atLeast(1)).onChanged(ImageMainViewModel.LoadingState.ERROR)
-    }
-
-    @After
-    fun tearDown() {
+        verify(loadingStateLDObserver, atLeast(1)).onChanged(CarImagesViewModel.LoadingState.ERROR)
     }
 }

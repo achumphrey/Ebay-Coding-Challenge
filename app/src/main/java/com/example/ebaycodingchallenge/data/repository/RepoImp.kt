@@ -7,7 +7,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class ImageRepoImp @Inject constructor(private val webServices: WebServices):ImageRepository {
+class RepoImp @Inject constructor(private val webServices: WebServices):Repository {
     override fun getCarThumbnailImages(): Single<CarImages> {
         return webServices.getThumbnailImages()
             .subscribeOn(Schedulers.io())
