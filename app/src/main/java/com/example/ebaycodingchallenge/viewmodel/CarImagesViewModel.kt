@@ -1,38 +1,43 @@
 package com.example.ebaycodingchallenge.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.ebaycodingchallenge.R
 import com.example.ebaycodingchallenge.data.model.Image
 import com.example.ebaycodingchallenge.data.repository.Repository
 import io.reactivex.disposables.CompositeDisposable
 import java.net.UnknownHostException
 
-class CarImagesViewModel constructor(private val repository: Repository): ViewModel() {
-    private val  disposable:CompositeDisposable = CompositeDisposable()
+class CarImagesViewModel constructor(private val repository: Repository, application: Application) :
+    AndroidViewModel(application) {
+    private val disposable: CompositeDisposable = CompositeDisposable()
     val carImage: MutableLiveData<List<Image>> = MutableLiveData()
     val errorMessage: MutableLiveData<String> = MutableLiveData()
     val loadingState = MutableLiveData<LoadingState>()
+    private val context = getApplication<Application>().applicationContext
 
-    fun getCarImageList(){
+    fun getCarImageList() {
         loadingState.value = LoadingState.LOADING
         disposable.add(
-        repository.getCarThumbnailImages()
-            .subscribe({
-                if (it.images.isEmpty()){
-                    errorMessage.value = "No Data Found"
+            repository.getCarThumbnailImages()
+                .subscribe({
+                    if (it.images.isEmpty()) {
+                        errorMessage.value = context?.getString(R.string.no_data_found)
+                        loadingState.value = LoadingState.ERROR
+                    } else {
+                        carImage.value = it.images
+                        loadingState.value = LoadingState.SUCCESS
+                    }
+                }, {
+                    it.printStackTrace()
+                    when (it) {
+                        is UnknownHostException -> errorMessage.value =
+                            context?.getString(R.string.no_network)
+                        else -> errorMessage.value = it.localizedMessage
+                    }
                     loadingState.value = LoadingState.ERROR
-                }else{
-                    carImage.value = it.images
-                    loadingState.value = LoadingState.SUCCESS
-                }
-            },{
-                it.printStackTrace()
-                when (it) {
-                    is UnknownHostException -> errorMessage.value = "No Network"
-                    else -> errorMessage.value = it.localizedMessage
-                }
-                loadingState.value = LoadingState.ERROR
-            })
+                })
 
         )
     }

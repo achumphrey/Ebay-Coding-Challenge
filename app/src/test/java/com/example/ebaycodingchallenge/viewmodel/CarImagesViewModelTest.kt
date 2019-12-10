@@ -1,7 +1,9 @@
 package com.example.ebaycodingchallenge.viewmodel
 
+import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.example.ebaycodingchallenge.R
 import com.example.ebaycodingchallenge.data.model.CarImages
 import com.example.ebaycodingchallenge.data.model.Image
 import com.example.ebaycodingchallenge.data.repository.Repository
@@ -36,17 +38,19 @@ class CarImagesViewModelTest {
     private val id = 12
 
     @Mock
+    lateinit var application: Application
+
+    @Mock
     lateinit var carImgRepository: Repository
 
     @Before
     fun setUp() {
-        carImgViewModel = CarImagesViewModel(carImgRepository)
+        carImgViewModel = CarImagesViewModel(carImgRepository, application)
         imageList.add(Image("anything", "anything"))
         carImageObject = CarImages(id, imageList)
         carImgViewModel.carImage.observeForever(carImgLDObserver)
         carImgViewModel.errorMessage.observeForever(errorMessageLDObsrever)
         carImgViewModel.loadingState.observeForever(loadingStateLDObserver)
-
     }
 
     @Test
@@ -76,7 +80,7 @@ class CarImagesViewModelTest {
 
         verify(carImgRepository, atLeast(1)).getCarThumbnailImages()
         verify(carImgLDObserver, atLeast(0)).onChanged(emptyList())
-        verify(errorMessageLDObsrever, atLeast(1)).onChanged("No Data Found")
+        verify(errorMessageLDObsrever, atLeast(1)).onChanged(application.getString(R.string.no_data_found)) //"No Data Found")
         verify(loadingStateLDObserver, atLeast(1)).onChanged(CarImagesViewModel.LoadingState.ERROR)
     }
 
@@ -93,7 +97,7 @@ class CarImagesViewModelTest {
 
         verify(carImgRepository, atLeast(1)).getCarThumbnailImages()
         verify(carImgLDObserver, atLeast(0)).onChanged(null)
-        verify(errorMessageLDObsrever, atLeast(1)).onChanged("No Network")
+        verify(errorMessageLDObsrever, atLeast(1)).onChanged(application.getString(R.string.no_network)) //"No Network")
         verify(loadingStateLDObserver, atLeast(1)).onChanged(CarImagesViewModel.LoadingState.ERROR)
     }
 
