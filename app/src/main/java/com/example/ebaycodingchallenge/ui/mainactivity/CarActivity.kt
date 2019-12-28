@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ebaycodingchallenge.R
 import com.example.ebaycodingchallenge.data.model.Image
+import com.example.ebaycodingchallenge.di.App
 import com.example.ebaycodingchallenge.di.DaggerImageComponent
 import com.example.ebaycodingchallenge.di.RepositoryModule
 import com.example.ebaycodingchallenge.di.WebServicesModule
@@ -40,7 +41,9 @@ class CarActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cars)
 
-        getDependency()
+        App.getComponent().inject(this)
+
+     //   getDependency()
         setupRecyclerView()
 
         viewModel =

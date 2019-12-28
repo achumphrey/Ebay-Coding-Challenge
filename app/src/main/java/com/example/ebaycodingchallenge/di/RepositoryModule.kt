@@ -1,6 +1,7 @@
 package com.example.ebaycodingchallenge.di
 
 import android.app.Application
+import android.content.Context
 import com.example.ebaycodingchallenge.data.remote.WebServices
 import com.example.ebaycodingchallenge.data.repository.RepoImp
 import com.example.ebaycodingchallenge.data.repository.Repository

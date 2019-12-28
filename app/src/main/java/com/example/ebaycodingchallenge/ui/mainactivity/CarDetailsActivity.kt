@@ -14,6 +14,7 @@ class CarDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_car_details)
 
         val carImage : String? = intent.getStringExtra (INTENT_MESSAGE)
-        carImage?.apply{imgLarge.loadGlideImage(this)}
+        carImage?.let{imgLarge.loadGlideImage(it)}
+     //   carImage?.apply{imgLarge.loadGlideImage(this)} both work very well
     }
 }

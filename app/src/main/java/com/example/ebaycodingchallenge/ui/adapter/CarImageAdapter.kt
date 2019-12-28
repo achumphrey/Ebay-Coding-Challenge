@@ -1,5 +1,6 @@
 package com.example.ebaycodingchallenge.ui.adapter
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,8 @@ import com.example.ebaycodingchallenge.util.inflate
 class CarImageAdapter constructor(private var images: MutableList<Image>, private val listener: ImageClickListener):
     RecyclerView.Adapter<ImageViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
+       /* val view : View = LayoutInflater.from(parent.context)
+            .inflate(R.layout.image_holder_images, parent, false)*/
         val view : View = parent.inflate(R.layout.image_holder_images, false)
         return ImageViewHolder(view)
     }

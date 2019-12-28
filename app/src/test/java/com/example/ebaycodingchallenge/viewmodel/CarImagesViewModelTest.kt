@@ -1,6 +1,7 @@
 package com.example.ebaycodingchallenge.viewmodel
 
 import android.app.Application
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.example.ebaycodingchallenge.R
@@ -36,6 +37,7 @@ class CarImagesViewModelTest {
     private val loadingStateLDObserver: Observer<CarImagesViewModel.LoadingState> = mock()
     private lateinit var carImageObject: CarImages
     private val id = 12
+    private lateinit var context: Context
 
     @Mock
     lateinit var application: Application
@@ -45,6 +47,8 @@ class CarImagesViewModelTest {
 
     @Before
     fun setUp() {
+        application = Application()
+        context  = application.applicationContext
         carImgViewModel = CarImagesViewModel(carImgRepository, application)
         imageList.add(Image("anything", "anything"))
         carImageObject = CarImages(id, imageList)
@@ -71,7 +75,6 @@ class CarImagesViewModelTest {
 
     @Test
     fun fetchCarImage_NoReturnImage_EmptyList() {
-
         val carObject = CarImages(id, emptyList())
 
         `when`(carImgRepository.getCarThumbnailImages()).thenReturn(Single.just(carObject))
@@ -80,13 +83,12 @@ class CarImagesViewModelTest {
 
         verify(carImgRepository, atLeast(1)).getCarThumbnailImages()
         verify(carImgLDObserver, atLeast(0)).onChanged(emptyList())
-        verify(errorMessageLDObsrever, atLeast(1)).onChanged(application.getString(R.string.no_data_found)) //"No Data Found")
+        verify(errorMessageLDObsrever, atLeast(1)).onChanged(context.getString(R.string.no_data_found)) //"No Data Found")
         verify(loadingStateLDObserver, atLeast(1)).onChanged(CarImagesViewModel.LoadingState.ERROR)
     }
 
     @Test
     fun fetchCarImage_NoReturnImage_NoNetwork() {
-
         `when`(carImgRepository.getCarThumbnailImages()).thenReturn(
             Single.error(
                 UnknownHostException("No Network")
@@ -97,7 +99,7 @@ class CarImagesViewModelTest {
 
         verify(carImgRepository, atLeast(1)).getCarThumbnailImages()
         verify(carImgLDObserver, atLeast(0)).onChanged(null)
-        verify(errorMessageLDObsrever, atLeast(1)).onChanged(application.getString(R.string.no_network)) //"No Network")
+        verify(errorMessageLDObsrever, atLeast(1)).onChanged(context.getString(R.string.no_network)) //"No Network")
         verify(loadingStateLDObserver, atLeast(1)).onChanged(CarImagesViewModel.LoadingState.ERROR)
     }
 
