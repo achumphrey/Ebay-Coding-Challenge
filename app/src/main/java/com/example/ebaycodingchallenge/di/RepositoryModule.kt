@@ -1,7 +1,6 @@
 package com.example.ebaycodingchallenge.di
 
 import android.app.Application
-import android.content.Context
 import com.example.ebaycodingchallenge.data.remote.WebServices
 import com.example.ebaycodingchallenge.data.repository.RepoImp
 import com.example.ebaycodingchallenge.data.repository.Repository
@@ -15,8 +14,8 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideViewModelFactory (repository: Repository, application: Application):CarImagesViewModelFactory{
-        return  CarImagesViewModelFactory(repository, application)
+    fun provideViewModelFactory (repository: Repository):CarImagesViewModelFactory{
+        return  CarImagesViewModelFactory(repository)
     }
 
     @Singleton

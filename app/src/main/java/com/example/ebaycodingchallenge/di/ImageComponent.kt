@@ -8,8 +8,4 @@ import javax.inject.Singleton
 @Component(modules= [RepositoryModule::class, WebServicesModule::class])
 interface ImageComponent {
     fun inject(carActivity: CarActivity)
-
-    companion object {
-        lateinit var instance: ImageComponent
-    }
 }

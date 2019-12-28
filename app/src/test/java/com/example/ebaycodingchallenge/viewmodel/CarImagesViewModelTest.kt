@@ -1,10 +1,7 @@
 package com.example.ebaycodingchallenge.viewmodel
 
-import android.app.Application
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.example.ebaycodingchallenge.R
 import com.example.ebaycodingchallenge.data.model.CarImages
 import com.example.ebaycodingchallenge.data.model.Image
 import com.example.ebaycodingchallenge.data.repository.Repository
@@ -37,19 +34,13 @@ class CarImagesViewModelTest {
     private val loadingStateLDObserver: Observer<CarImagesViewModel.LoadingState> = mock()
     private lateinit var carImageObject: CarImages
     private val id = 12
-    private lateinit var context: Context
-
-    @Mock
-    lateinit var application: Application
 
     @Mock
     lateinit var carImgRepository: Repository
 
     @Before
     fun setUp() {
-        application = Application()
-        context  = application.applicationContext
-        carImgViewModel = CarImagesViewModel(carImgRepository, application)
+        carImgViewModel = CarImagesViewModel(carImgRepository)
         imageList.add(Image("anything", "anything"))
         carImageObject = CarImages(id, imageList)
         carImgViewModel.carImage.observeForever(carImgLDObserver)
@@ -83,7 +74,7 @@ class CarImagesViewModelTest {
 
         verify(carImgRepository, atLeast(1)).getCarThumbnailImages()
         verify(carImgLDObserver, atLeast(0)).onChanged(emptyList())
-        verify(errorMessageLDObsrever, atLeast(1)).onChanged(context.getString(R.string.no_data_found)) //"No Data Found")
+        verify(errorMessageLDObsrever, atLeast(1)).onChanged("No Data Found")
         verify(loadingStateLDObserver, atLeast(1)).onChanged(CarImagesViewModel.LoadingState.ERROR)
     }
 
@@ -99,7 +90,7 @@ class CarImagesViewModelTest {
 
         verify(carImgRepository, atLeast(1)).getCarThumbnailImages()
         verify(carImgLDObserver, atLeast(0)).onChanged(null)
-        verify(errorMessageLDObsrever, atLeast(1)).onChanged(context.getString(R.string.no_network)) //"No Network")
+        verify(errorMessageLDObsrever, atLeast(1)).onChanged("No Network")
         verify(loadingStateLDObserver, atLeast(1)).onChanged(CarImagesViewModel.LoadingState.ERROR)
     }
 

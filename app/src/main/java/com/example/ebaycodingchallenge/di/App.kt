@@ -5,12 +5,13 @@ import android.app.Application
 class App : Application() {
 
     companion object {
-        fun getComponent() = ImageComponent.instance
+       private lateinit var component: ImageComponent
+       fun getComponent() = component
     }
 
     override fun onCreate() {
         super.onCreate()
-        ImageComponent.instance = buildComponent()
+        component = buildComponent()
     }
 
     private fun buildComponent(): ImageComponent {
